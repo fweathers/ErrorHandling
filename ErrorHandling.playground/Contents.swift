@@ -50,7 +50,8 @@ class Lexer {
                 // Just advance to ignore spaces
                 
             default :
-                // Something unexpected - need to sen back an error
+
+            throw Error.InvalidCharacter(nextCharacter)
             }
         }
         
