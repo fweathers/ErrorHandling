@@ -98,6 +98,11 @@ evaluate("10 + 3 + 5")
 //evaluate("1 + 2 + abcdefg")
 
 class Parser {
+    enum Error: ErrorType {
+        case UnexpectedEndOfInput
+        case InvalidToken(Token)
+    }
+    
     let tokens: [Token]
     var position = 0
     
