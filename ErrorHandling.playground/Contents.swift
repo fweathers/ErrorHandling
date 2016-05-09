@@ -7,6 +7,7 @@ var str = "Hello, Felicia"
 enum Token {
     case Number(Int)
     case Plus
+    case Subtraction
 }
 
 class Lexer {
@@ -64,12 +65,12 @@ class Lexer {
             case "+" :
                 tokens.append(.Plus)
                 advance()
-                
+            case "-" :
+                tokens.append(.Subtraction)
+                advance()
             case " " :
-
                 advance()
             default :
-
             throw Error.InvalidCharacter(nextCharacter)
             }
         }
@@ -108,6 +109,8 @@ class Parser {
             return value
         case .Plus :
             throw Error.InvalidToken(token)
+        case .Subtraction :
+            throw Error.InvalidToken(token)
         }
     }
     
@@ -123,6 +126,12 @@ class Parser {
                 // After a plus, we must get another number
                 let nextNumber = try getNumber()
                 value += nextNumber
+                
+            // Getting Subtraction after a Number is legal
+            case .Subtraction :
+                // After a subtraction, we must get another number
+                let nextNumber = try getNumber()
+                value -= nextNumber
                 
             // Getting a Number after a Number is not legal
             case .Number:
@@ -157,3 +166,6 @@ func evaluate(input: String) {
 }
 
 evaluate("10 + 3 + 5")
+evaluate("10 + 5 -3 - 1")
+
+
