@@ -24,4 +24,9 @@ class Lexer {
         }
         return input[position]
     }
+    
+    func advance() {
+        position = position.successor()
+    }
 }
+
