@@ -129,4 +129,25 @@ class Parser {
             throw Error.InvalidToken(token)
         }
     }
+    
+    func parse() throws -> Int {
+        // Require a number first
+        var value = try getNumber()
+        
+        while let token = getNextToken() {
+            switch token {
+                
+                // Getting a Plus after a Number is legal
+            case .Plus :
+                // After a plus, we must get another number
+                let nextNumber = try getNumber()
+                value += nextNumber
+                
+                // Getting a Number after a Number is not legal
+            case .Number:
+                throw Error.InvalidToken(token)
+            }
+        }
+        return value
+    }
 }
