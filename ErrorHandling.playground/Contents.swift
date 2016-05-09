@@ -34,21 +34,40 @@ class Lexer {
         position = position.successor()
     }
     
+    func getNumber() -> Int {
+        var value = 0
+        
+        while let nextCharacter = peek() {
+            switch nextCharacter {
+            case "0" ... "9" :
+                // Another digit - add it into value
+                let digitValue = Int(String(nextCharacter))!
+                value = 10*value + digitValue
+                advance()
+                
+            default:
+                // A non-digit - go back to regular lexing
+                return value
+            }
+        }
+        return value
+    }
+    
     func lex() throws -> [Token] {
         var tokens = [Token]()
         
         while let nextCharacter = peek() {
             switch nextCharacter {
             case "0" ... "9" :
-                // Start of a number - need to grab the rest
-                
+                let value = getNumber()
+                tokens.append(.Number(value))
             case "+" :
                 tokens.append(.Plus)
                 advance()
                 
             case " " :
-                // Just advance to ignore spaces
-                
+
+                advance()
             default :
 
             throw Error.InvalidCharacter(nextCharacter)
