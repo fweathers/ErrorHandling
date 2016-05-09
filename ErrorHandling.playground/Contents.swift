@@ -116,4 +116,17 @@ class Parser {
         }
         return tokens[position.successor()]
     }
+    
+    func getNumber() throws -> Int {
+        guard let token = getNextToken() else {
+            throw Error.UnexpectedEndOfInput
+        }
+        
+        switch token {
+        case .Number(let value) :
+            return value
+        case .Plus :
+            throw Error.InvalidToken(token)
+        }
+    }
 }
